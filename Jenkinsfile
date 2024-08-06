@@ -30,13 +30,11 @@ error "Pipeline aborted due to quality gate failure: ${qg.status}"
 }
 }
 stage('Docker Build') {
-       agent any
        steps {
         sh 'docker build -t malprad/spring-petclinic:latest .'
       }
     }
        stage('Docker Push') {
-      agent any
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
