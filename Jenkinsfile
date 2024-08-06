@@ -1,19 +1,14 @@
 pipeline{
-    agent any
-    tools{
-        maven 'maven'
-    }
-    stages{
-        stage('checkout the code'){
-            steps{
-                git url:'https://github.com/malprad/springboot-maven-course-micro-svc.git', branch: 'master'
-            }
-        }
-        stage('build the code'){
-            steps{
-                sh 'mvn clean package'
-            }
-        }
+agent any
+tools{
+maven 'maven'
+}
+stages{
+stage('checkout the code'){
+steps{
+git url:'https://github.com/malprad/springboot-maven-course-micro-svc.git', branch: 'master'
+}
+}
 stage('build the code'){
 steps{
 sh 'mvn clean package'
@@ -25,7 +20,6 @@ script{
 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarqube') {
 sh 'mvn sonar:sonar '
 }
- 
 timeout(time: 1, unit: 'HOURS') {
 def qg = waitForQualityGate()
 if (qg.status != 'OK') {
